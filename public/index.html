@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TaskFlow : gérez vos tâches avec priorités, catégories, vue Kanban et tableau de bord. Application web sécurisée avec mode sombre et rappels.">
+  <title>TaskFlow</title>
+  <link rel="icon" type="image/png" href="task.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="auth" class="auth" hidden>
+    <form id="authForm">
+      <h1>TaskFlow</h1>
+      <p id="authSub">Connectez-vous pour retrouver vos tâches.</p>
+      <label id="nameRow" hidden>Nom <input id="aName" maxlength="80"></label>
+      <label>E-mail <input id="aEmail" type="email" required></label>
+      <label>Mot de passe <input id="aPass" type="password" minlength="6" required></label>
+      <button class="btn" id="authBtn">Se connecter</button>
+      <button type="button" class="link" id="authSwitch">Pas de compte ? Créer un compte</button>
+    </form>
+  </main>
+
+  <div class="wrap" id="app" hidden>
+    <header>
+      <h1>TaskFlow</h1>
+      <div class="tools">
+        <span id="who" class="who"></span>
+        <button class="icon" id="bell" title="Activer les rappels" aria-label="Activer les rappels">🔔</button>
+        <button class="icon" id="theme" title="Changer de thème" aria-label="Changer de thème">☾</button>
+        <button class="ghost" id="cats">Catégories</button>
+        <button class="btn" id="add">Nouvelle tâche</button>
+        <button class="ghost" id="logout">Déconnexion</button>
+      </div>
+      
+    </header>
+
+    <nav class="seg tabs" id="tabs">
+      <button data-v="list" class="on">Liste</button>
+      <button data-v="board">Kanban</button>
+      <button data-v="dash">Tableau de bord</button>
+    </nav>
+
+    <section class="summary">
+      <p id="summaryText">Chargement…</p>
+      <div class="bar"><span id="barFill"></span></div>
+    </section>
+
+    <section class="filters" id="filters">
+      <div class="seg" id="statusSeg">
+        <button data-s="all" class="on">Toutes</button>
+        <button data-s="todo">À faire</button>
+        <button data-s="doing">En cours</button>
+        <button data-s="done">Terminées</button>
+      </div>
+      <select id="catFilter" aria-label="Filtrer par catégorie"></select>
+      <select id="prioFilter" aria-label="Filtrer par priorité">
+        <option value="all">Toutes priorités</option><option value="high">Haute</option><option value="medium">Moyenne</option><option value="low">Basse</option>
+      </select>
+      <input id="search" type="search" placeholder="Rechercher une tâche">
+    </section>
+
+    <ul id="list" class="list"></ul>
+    <div id="board" class="board" hidden></div>
+    <div id="dash" class="dash" hidden></div>
+  </div>
+
+  <dialog id="dlg">
+    <form id="form" method="dialog">
+      <h2 id="dlgTitle">Nouvelle tâche</h2>
+      <label>Titre <input id="fTitle" required maxlength="150" placeholder="Ex. Terminer le rapport de stage"></label>
+      <label>Description <textarea id="fDesc" rows="3" placeholder="Détails (facultatif)"></textarea></label>
+      <div class="row">
+        <label>Priorité <select id="fPrio"><option value="high">Haute</option><option value="medium" selected>Moyenne</option><option value="low">Basse</option></select></label>
+        <label>Statut <select id="fStatus"><option value="todo">À faire</option><option value="doing">En cours</option><option value="done">Terminé</option></select></label>
+      </div>
+      <div class="row">
+        <label>Catégorie <select id="fCat"></select></label>
+        <label>Échéance <input id="fDue" type="date"></label>
+      </div>
+      <div class="actions"><button type="button" class="ghost" id="cancel">Annuler</button><button type="submit" class="btn">Enregistrer</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="catDlg">
+    <h2>Catégories</h2>
+    <div id="catList" class="chips"></div>
+    <form id="catForm" class="row cat-form">
+      <input id="cName" placeholder="Nouvelle catégorie" maxlength="40" required>
+      <input id="cColor" type="color" value="#0f3d33" aria-label="Couleur">
+      <button class="btn">Ajouter</button>
+    </form>
+    <div class="actions"><button type="button" class="ghost" id="catClose">Fermer</button></div>
+  </dialog>
+
+  <dialog id="delDlg">
+    <h2>Supprimer la tâche</h2>
+    <p id="delText"></p>
+    <div class="actions"><button type="button" class="ghost" id="delCancel">Annuler</button><button type="button" class="btn" id="delOk">Supprimer</button></div>
+  </dialog>
+
+  <div id="toasts" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+<footer class="foot">
+        <img src="logo.png" class="logo-sm" alt="">
+        <span>© <span id="year"></span> TaskFlow. Conçu par <strong>Dorra Gharbi</strong>. Tous droits réservés.</span>
+      </footer>
+</html>
