@@ -8,12 +8,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const DB = process.env.DB_NAME || 'taskflow';
 const SECRET = process.env.JWT_SECRET || 'secret-de-dev-a-changer';
-const conn = { host: process.env.DB_HOST || 'localhost', user: process.env.DB_USER || 'root', password: process.env.DB_PASSWORD || '' };
+const conn = {
+  host: process.env.DB_HOST || 'localhost', port: +(process.env.DB_PORT || 3306),
+  user: process.env.DB_USER || 'root', password: process.env.DB_PASSWORD || '',
+  ...(process.env.DB_SSL === 'true' ? { ssl: { rejectUnauthorized: false } } : {}),
+};
 let pool;
 
 async function initDb() {
   const c = await mysql.createConnection(conn);
-  await c.query(`CREATE DATABASE IF NOT EXISTS \`${DB}\` CHARACTER SET utf8mb4`);
+  try { await c.query(`CREATE DATABASE IF NOT EXISTS \`${DB}\` CHARACTER SET utf8mb4`); } catch (e) { console.log('Base existante utilisée.'); }
   await c.end();
   pool = mysql.createPool({ ...conn, database: DB, dateStrings: true });
   // Migration : l'ancienne table (sans utilisateurs) est recréée
