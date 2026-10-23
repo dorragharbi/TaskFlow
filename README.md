@@ -17,7 +17,7 @@ Application web de gestion de tâches, réalisée dans le cadre de ma formation 
 ![Liste des tâches](screenshots/liste.png)
 ![Vue Kanban](screenshots/kanban.png)
 ![Tableau de bord](screenshots/dashboard.png)
-![Mode sombre](screenshots/sombre.png)
+![Mode sombre](screenshots/mode.png)
 
 ## Technologies
 Node.js, Express, MySQL (mysql2), JavaScript, HTML/CSS, API REST, JWT, bcrypt
